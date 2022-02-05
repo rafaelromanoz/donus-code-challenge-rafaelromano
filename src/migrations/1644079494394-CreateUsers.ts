@@ -11,6 +11,7 @@ export class CreateUsers1644079494394 implements MigrationInterface {
           type: 'int',
           isPrimary: true,
           generationStrategy: 'increment',
+          isGenerated: true,
         },
         {
           name: 'cpf',

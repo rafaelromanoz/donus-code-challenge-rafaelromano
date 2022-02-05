@@ -13,7 +13,7 @@ class User {
 
   @CreateDateColumn()
   createdAt: Date;
-  
+
   @CreateDateColumn()
   updatedAt: Date;
 }
