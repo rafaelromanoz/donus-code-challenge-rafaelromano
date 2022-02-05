@@ -1,8 +1,10 @@
+import 'reflect-metadata';
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import userRouter from './routes/userRouter';
 import errorHandler from './middlewares/errorHandler';
+import './typeorm';
 dotenv.config();
 
 const app = express();

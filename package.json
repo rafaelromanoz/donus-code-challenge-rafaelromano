@@ -2,10 +2,11 @@
   "name": "teste-digitalrepublic-challenge",
   "version": "1.0.0",
   "description": "challenge-code-rafael",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts"
+    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "repository": {
     "type": "git",
@@ -35,7 +36,7 @@
     "express": "^4.17.2",
     "joi": "^17.6.0",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.15.0",
-    "sequelize-cli": "^6.4.1"
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.41"
   }
 }
