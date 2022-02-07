@@ -2,25 +2,31 @@ import { UserRepository } from "../repositories/UsersRepository";
 import { getCustomRepository } from "typeorm";
 import userSchema from "../schemas/schemas";
 import { createErrorMessage } from "../utils/functions";
+import { generateToken } from "../auth/authConfig";
+import AccountRepository from "../repositories/AccountRepository";
 interface IRequest {
   name: string;
   cpf: string;
 }
 
-const createUserService = async (body: IRequest): Promise<object> => {
+const createUserAndAccountService = async (body: IRequest): Promise<object> => {
   const { error } = userSchema.validate(body);
   if (error) throw createErrorMessage(400, error.message);
   const userRepository = getCustomRepository(UserRepository);
-  const existsUser = await userRepository.findByCpf(body.cpf);
-  if (existsUser) throw createErrorMessage(409, "Usuário já existe");
+  const accountRepository = getCustomRepository(AccountRepository);
+  const existsUserByCpf = await userRepository.findByCpf(body.cpf);
+  const existsUserByName = await userRepository.findByName(body.name);
+  if (existsUserByCpf || existsUserByName)
+    throw createErrorMessage(409, "Usuário já existe");
   const user = userRepository.create({ ...body });
-  await userRepository.save(user);
+  const { id } = await userRepository.save(user);
+  const createAccount = accountRepository.create({ balance: 0, user: id });
+  await accountRepository.save(createAccount);
+  const token = generateToken({ id });
   return {
-    message:
-      `Olá ${body.name} seu usuário foi cadastrado com o CPF: ${body.cpf} foi cadastrado com sucesso`,
+    message: `Olá ${body.name} seu usuário foi cadastrado com o CPF: ${body.cpf} foi cadastrado com sucesso`,
+    token,
   };
 };
 
-export {
-  createUserService,
-}
+export { createUserAndAccountService };

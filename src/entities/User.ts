@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import Account from './Account';
 
 @Entity('Users')
 class User {
@@ -13,6 +14,9 @@ class User {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @OneToOne(() => Account, (account: Account) => account.user)
+  account: Account;
 
   @CreateDateColumn()
   updatedAt: Date;

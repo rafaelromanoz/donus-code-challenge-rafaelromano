@@ -1,17 +1,17 @@
 import { Response, Request, NextFunction } from "express";
-import { createUserService } from "../services/userService";
+import { createUserAndAccountService } from "../services/userService";
 
-const createUserController = async (
+const createUserAndAccountController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const user = await createUserService(req.body);
+    const user = await createUserAndAccountService(req.body);
     return res.status(200).json(user);
   } catch (error) {
     next(error);
   }
 };
 
-export { createUserController };
+export { createUserAndAccountController };

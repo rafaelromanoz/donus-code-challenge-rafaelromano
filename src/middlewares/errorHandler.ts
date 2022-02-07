@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { CustomError } from "../types/types";
 
-export default (error: CustomError, _req: Request, res: Response, next: NextFunction) => {
+export default (error, _req: Request, res: Response, next: NextFunction) => {
+  console.log('🚀 ~ file: errorHandler.ts ~ line 4 ~ error', error);
   if (error.errorCode) {
     const { errorCode, message } = error;
     return res.status(errorCode).json({ message });

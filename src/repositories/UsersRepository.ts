@@ -7,6 +7,14 @@ export class UserRepository extends Repository<User> {
     const user = await this.findOne({
       where: {
         cpf,
+      },
+    })
+    return user;
+  }
+  public async findByName(name: string): Promise<User | undefined> {
+    const user = await this.findOne({
+      where: {
+        name
       }
     })
     return user;
