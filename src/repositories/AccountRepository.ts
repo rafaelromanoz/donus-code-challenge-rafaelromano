@@ -20,4 +20,22 @@ export default class AccountRepository extends Repository<Account | any> {
       .setParameter("value", value)
       .execute();
   }
+  public async withdrawValue(value: number, id: number): Promise<Account | void> {
+    await getConnection()
+      .createQueryBuilder()
+      .update(Account)
+      .where("id = :id", { id })
+      .set({ balance: () => 'balance - :value' })
+      .setParameter("value", value)
+      .execute()
+  }
+  public async receiveValue(value: number, id: number): Promise<Account | void> {
+    await getConnection()
+      .createQueryBuilder()
+      .update(Account)
+      .where("id = :id", { id })
+      .set({ balance: () => 'balance + :value' })
+      .setParameter("value", value)
+      .execute()
+  }
 }
