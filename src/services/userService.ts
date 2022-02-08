@@ -47,4 +47,4 @@ const createAccount = async (id: number, repository: AccountRepository) => {
   await repository.save(createAccount);
 }
 
-export { createUserAndAccountService, verifyExistsUser, verifyBodyRequest };
+export { createUserAndAccountService, verifyExistsUser, verifyBodyRequest, createAccount, createUser };
