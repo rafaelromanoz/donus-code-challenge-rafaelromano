@@ -1,6 +1,6 @@
 import { UserRepository } from "../repositories/UsersRepository";
 import { getCustomRepository } from "typeorm";
-import userSchema from "../schemas/schemas";
+import { userSchema } from "../schemas/schemas";
 import { createErrorMessage } from "../utils/functions";
 import { generateToken } from "../auth/authConfig";
 import AccountRepository from "../repositories/AccountRepository";
@@ -10,11 +10,13 @@ interface IRequest {
 }
 
 const createUserAndAccountService = async (body: IRequest): Promise<object> => {
+  const userRepository = getCustomRepository(UserRepository);
+  const accountRepository = getCustomRepository(AccountRepository);
   const { name, cpf } = body;
   verifyBodyRequest(body);
-  await verifyUsersExists(cpf, name);
-  const id = await createUser(body);
-  await createAccount(body, id);
+  await verifyExistsUser(cpf, name, userRepository);
+  const id = await createUser(body, userRepository);
+  await createAccount(id, accountRepository);
   const token = generateToken({ id });
   return {
     message: `Olá ${body.name} seu usuário foi cadastrado com o CPF: ${body.cpf} foi cadastrado com sucesso`,
@@ -27,25 +29,22 @@ const verifyBodyRequest = (body: IRequest) => {
   if (error) throw createErrorMessage(400, error.message);
 }
 
-const verifyUsersExists = async (cpf: string, name: string) => {
-  const userRepository = getCustomRepository(UserRepository);
-  const existsUserByCpf = await userRepository.findByCpf(cpf);
-  const existsUserByName = await userRepository.findByName(name);
+const verifyExistsUser = async (cpf: string, name: string, repository: UserRepository) => {
+  const existsUserByCpf = await repository.findByCpf(cpf);
+  const existsUserByName = await repository.findByName(name);
   if (existsUserByCpf || existsUserByName)
     throw createErrorMessage(409, "Usuário já existe");
 }
 
-const createUser = async (body: IRequest) => {
-  const userRepository = getCustomRepository(UserRepository);
-  const user = userRepository.create({ ...body });
-  const { id } = await userRepository.save(user);
+const createUser = async (body: IRequest, repository: UserRepository) => {
+  const user = repository.create({ ...body });
+  const { id } = await repository.save(user);
   return id;
 }
 
-const createAccount = async (body: IRequest, id: number) => {
-  const accountRepository = getCustomRepository(AccountRepository);
-  const createAccount = accountRepository.create({ balance: 0, user: id });
-  await accountRepository.save(createAccount);
+const createAccount = async (id: number, repository: AccountRepository) => {
+  const createAccount = repository.create({ balance: 0, user: id });
+  await repository.save(createAccount);
 }
 
-export { createUserAndAccountService };
+export { createUserAndAccountService, verifyExistsUser, verifyBodyRequest };

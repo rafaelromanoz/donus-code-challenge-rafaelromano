@@ -9,4 +9,15 @@ const userSchema = Joi.object({
   name: Joi.string().min(10).required(),
 });
 
-export default userSchema;
+const transferSchema = Joi.object({
+  cpfOrigin: Joi.string().regex(regexCPF).required().messages({
+    'string.pattern.base': 'CPF inválido',
+  }),
+  quantity: Joi.number().required(),
+  cpfDestiny: Joi.string().required(),
+})
+
+export {
+  userSchema,
+  transferSchema,
+};

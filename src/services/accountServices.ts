@@ -2,6 +2,7 @@ import AccountRepository from "../repositories/AccountRepository";
 import { getCustomRepository, getConnection } from "typeorm";
 import { createErrorMessage } from "../utils/functions";
 import { UserRepository } from "../repositories/UsersRepository";
+import { transferSchema } from "../schemas/schemas";
 
 interface IDeposit {
   cpf: string;
@@ -23,7 +24,13 @@ const depositOnAccountService = async (body: IDeposit) => {
   };
 };
 
+const checkBodyRequest = (body: ITransfer) => {
+  const { error } = transferSchema.validate(body);
+  if (error) throw createErrorMessage(400, 'Dados inválidos');
+}
+
 const tranferValueAccountsService = async (body: ITransfer) => {
+  checkBodyRequest(body);
   const { cpfOrigin, quantity, cpfDestiny } = body;
   if (quantity > 2000) throw createErrorMessage(400, 'Não é possível transferir valor maior que 2000');
   await checkValue(cpfOrigin, quantity);
