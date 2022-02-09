@@ -21,6 +21,7 @@ Para executar o projeto retire o .dev do arquivo .env.dev e preencha com as info
 OBS: Se preferir subir o container docker as configurações serão essas:
 
 ```
+JWT_SECRET=suachave
 MYSQL_USER=root
 MYSQL_PASSWORD=
 MYSQL_DATABASE=challenge_digitalrepublic
@@ -49,7 +50,7 @@ npm run typeorm migration:run
 <strong>Rode o servidor</strong>
 
 ```
-npm run dev
+npm start
 ```
 
 ## ⚙️ Executando os testes

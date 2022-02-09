@@ -6,7 +6,6 @@ const depositOnAccountController = async (req: Request, res: Response, next: Nex
     const informations = await depositOnAccountService(req.body);
     return res.status(201).json(informations);
   } catch (error) {
-    console.log(error);
     next(error);
   }
 }
@@ -16,7 +15,6 @@ const tranferValueAccountsController = async (req: Request, res: Response, next:
     const informations = await tranferValueAccountsService(req.body);
     return res.status(200).json(informations);
   } catch (error) {
-    console.log(error);
     next(error);
   }
 }
