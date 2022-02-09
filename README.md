@@ -16,7 +16,7 @@ docker-compose up
 
 ### 🔧 Instalação
 
-Para executar o projeto retire o .dev do arquivo .env.dev e preencha com as informações do seu banco MySQL
+Para executar o projeto retire o .dev do arquivo .env.dev e preencha com as informações do seu banco MySQL.
 
 OBS: Se preferir subir o container docker as configurações serão essas:
 
@@ -86,6 +86,10 @@ http://localhost:3000/account/deposit
 }
 ```
 Na rota de transferencia entre as contas, como a operação precisa ser atômica respeitando o princípio  ACID (atomic, consistency, isolation, durability) foi utilizada do método transaction do TypeORM, as contas não podem ter valor negativo então só é possível transferir se o usuário possui saldo, e também por questões de regra de negócio não é possível transferir um valor maior que 2000, para transferir dinheiro entre as contas o JSON aceito é nesse padrão:
+
+```
+http://localhost:3000/account/transfer
+```
 
 ```json
 {
