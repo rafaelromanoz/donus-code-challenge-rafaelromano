@@ -44,13 +44,21 @@ const tranferValueAccountsService = async (body: ITransfer) => {
   };
 };
 
-const getUsersId = async (cpfOrigin: string, cpfDestiny: string, repository: UserRepository) => {
+const getUsersId = async (
+  cpfOrigin: string,
+  cpfDestiny: string,
+  repository: UserRepository
+) => {
   const { id: idOrigin } = await repository.findByCpf(cpfOrigin);
   const { id: idDestiny } = await repository.findByCpf(cpfDestiny);
   return { idOrigin, idDestiny };
 };
 
-const checkValue = async (cpfOrigin: string, quantity: number, repository: UserRepository) => {
+const checkValue = async (
+  cpfOrigin: string,
+  quantity: number,
+  repository: UserRepository
+) => {
   const { account: { balance } } = await repository.findByCpf(cpfOrigin);
   if (balance - quantity < 0)
     throw createErrorMessage(400, "Você não possuí saldo disponível");
@@ -71,14 +79,21 @@ const tranferBalanceBetweenAccounts = async (
   });
 };
 
-const verifyIfExistsUser = async (cpf: string, repository: UserRepository) => {
+const verifyIfExistsUser = async (
+  cpf: string,
+  repository: UserRepository
+) => {
   const existsUser = await repository.findByCpf(cpf);
   if (!existsUser)
     throw createErrorMessage(404, "Não existe usuário com esse CPF");
   return existsUser.id;
 }
 
-const depositOnAccount = async (id: number, deposit: number, repository: AccountRepository) => {
+const depositOnAccount = async (
+  id: number,
+  deposit: number,
+  repository: AccountRepository
+) => {
   await repository.depositValue(deposit, id);
 }
 

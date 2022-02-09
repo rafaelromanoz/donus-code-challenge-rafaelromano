@@ -9,7 +9,9 @@ interface IRequest {
   cpf: string;
 }
 
-const createUserAndAccountService = async (body: IRequest): Promise<object> => {
+const createUserAndAccountService = async (
+  body: IRequest
+): Promise<object> => {
   const userRepository = getCustomRepository(UserRepository);
   const accountRepository = getCustomRepository(AccountRepository);
   const { name, cpf } = body;
@@ -29,22 +31,38 @@ const verifyBodyRequest = (body: IRequest) => {
   if (error) throw createErrorMessage(400, error.message);
 }
 
-const verifyExistsUser = async (cpf: string, name: string, repository: UserRepository) => {
+const verifyExistsUser = async (
+  cpf: string,
+  name: string,
+  repository: UserRepository
+) => {
   const existsUserByCpf = await repository.findByCpf(cpf);
   const existsUserByName = await repository.findByName(name);
   if (existsUserByCpf || existsUserByName)
     throw createErrorMessage(409, "Usuário já existe");
 }
 
-const createUser = async (body: IRequest, repository: UserRepository) => {
+const createUser = async (
+  body: IRequest,
+  repository: UserRepository
+) => {
   const user = repository.create({ ...body });
   const { id } = await repository.save(user);
   return id;
 }
 
-const createAccount = async (id: number, repository: AccountRepository) => {
+const createAccount = async (
+  id: number,
+  repository: AccountRepository
+) => {
   const createAccount = repository.create({ balance: 0, user: id });
   await repository.save(createAccount);
 }
 
-export { createUserAndAccountService, verifyExistsUser, verifyBodyRequest, createAccount, createUser };
+export {
+  createUserAndAccountService,
+  verifyExistsUser,
+  verifyBodyRequest,
+  createAccount,
+  createUser
+};
