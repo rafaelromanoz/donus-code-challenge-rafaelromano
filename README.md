@@ -66,7 +66,7 @@ npm test
 Para usar a aplicação recomenda-se o Insomnia, na pasta
 insomnia-file possui o ambiente configurado com as rotas para usar.
 
-Na rota /user é possível cadastrar um usuário, envie um json no seguinte formato, após o cadastro é gerado um token que com ele é possível fazer depósitos ou transferencias. Copie o token e coloque no header 'authorization' das próximas requisições.
+Na rota /user é possível cadastrar um usuário, envie um json no seguinte formato, após o cadastro é gerado um token que com ele é possível fazer depósitos ou transferências. Copie o token e coloque no header 'authorization' das próximas requisições.
 ```
 http://localhost:3000/user
 ```
@@ -76,7 +76,7 @@ http://localhost:3000/user
   "cpf": "114.684.207-08"
 }
 ```
-Para depositar é necessário um CPF válido cadastrado antes e o seguinte JSON na request.
+Para depositar é necessário um CPF válido cadastrado antes e o seguinte JSON no corpo da requisição.
 ```
 http://localhost:3000/account/deposit
 ```
@@ -86,7 +86,7 @@ http://localhost:3000/account/deposit
   "deposit": 3000
 }
 ```
-Na rota de transferencia entre as contas, como a operação precisa ser atômica respeitando o princípio  ACID (atomic, consistency, isolation, durability) foi utilizada do método transaction do TypeORM, as contas não podem ter valor negativo então só é possível transferir se o usuário possui saldo, e também por questões de regra de negócio não é possível transferir um valor maior que 2000, para transferir dinheiro entre as contas o JSON aceito é nesse padrão:
+Na rota de transferência entre as contas, como a operação precisa ser atômica respeitando o princípio  ACID (atomic, consistency, isolation, durability) foi utilizada do método transaction do TypeORM, as contas não podem ter valor negativo então só é possível transferir se o usuário possui saldo, e também por questões de regra de negócio não é possível transferir um valor maior que 2000, para transferir dinheiro entre as contas o JSON aceito é nesse padrão:
 
 ```
 http://localhost:3000/account/transfer
