@@ -90,8 +90,8 @@ Na rota de transferencia entre as contas, como a operação precisa ser atômica
 ```json
 {
   "cpfOrigin": "115.987.555-98",
-	"quantity":  188,
-	"cpfDestiny": "114.684.207-08"
+  "quantity":  188,
+  "cpfDestiny": "114.684.207-08"
 }
 ```
 
